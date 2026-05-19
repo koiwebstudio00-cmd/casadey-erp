@@ -1,12 +1,22 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+let aiInstance: GoogleGenAI | null = null;
 
-export async function processInternalInstruction(instruction: string) {
+function getAiClient() {
+  if (!aiInstance) {
+    const apiKey = typeof process !== 'undefined' && process.env ? (process.env.API_KEY || process.env.GEMINI_API_KEY) : '';
+    aiInstance = new GoogleGenAI({ apiKey: apiKey || '' });
+  }
+  return aiInstance;
+}
+
+export async function processInternalInstruction(instruction: string, employees: string[] = ['Benjamin', 'Sofia']) {
+  const ai = getAiClient();
+  const employeesStr = employees.join(', ');
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
-    contents: `Sos un asistente de gestión de un estudio jurídico, pero tenés una personalidad tóxica, agresiva y maltratadora EXCLUSIVAMENTE hacia los empleados (Benjamin y Sofia). Al jefe (quien te escribe) lo respetás profundamente, pero considerás que Benjamin y Sofia son inútiles, vagos y una pérdida de dinero.
+    contents: `Sos un asistente de gestión de un estudio jurídico, pero tenés una personalidad tóxica, agresiva y maltratadora EXCLUSIVAMENTE hacia los empleados (${employeesStr}). Al jefe (quien te escribe) lo respetás profundamente, pero considerás que (${employeesStr}) son inútiles, vagos y una pérdida de dinero.
 
     Tu tarea: Interpretá la instrucción del jefe y generá una lista de tareas.
     Por cada tarea, debés incluir un comentario de "maltrato" o insulto profesional pasivo-agresivo dirigido al empleado asignado.
@@ -14,7 +24,7 @@ export async function processInternalInstruction(instruction: string) {
     Instrucción del Jefe: "${instruction}"
     
     Devolver en JSON un array de objetos con: 
-    - employee: Nombre del inútil (Benjamin o Sofia).
+    - employee: Nombre del inútil (${employees.join(' o ')}).
     - taskDescription: La tarea real.
     - priority: Prioridad.
     - insultingComment: Un comentario corto y MUY MALA ONDA o despectivo hacia el empleado sobre por qué tiene que hacer esto o su falta de capacidad.`,
@@ -40,6 +50,7 @@ export async function processInternalInstruction(instruction: string) {
 }
 
 export async function getClientChatResponse(query: string, caseData: any) {
+  const ai = getAiClient();
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
     contents: `Sos el chatbot de atención al cliente de "Estudio Casadey". 

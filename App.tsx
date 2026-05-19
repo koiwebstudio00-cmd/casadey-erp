@@ -34,26 +34,26 @@ const App: React.FC = () => {
     }
   };
 
-  const mobileNavItems = isClientView 
+  const mobileNavItems = isClientView
     ? [
-        { id: 'portal', label: 'Mi Caso', icon: LayoutDashboard },
-        { id: 'docs-upload', label: 'Docs', icon: Gavel },
-        { id: 'support', label: 'Ayuda', icon: ClipboardList },
-      ]
+      { id: 'portal', label: 'Mi Caso', icon: LayoutDashboard },
+      { id: 'docs-upload', label: 'Docs', icon: Gavel },
+      { id: 'support', label: 'Ayuda', icon: ClipboardList },
+    ]
     : [
-        { id: 'dashboard', label: 'Inicio', icon: LayoutDashboard },
-        { id: 'tasks', label: 'Tareas', icon: ClipboardList },
-        { id: 'cases', label: 'Casos', icon: Gavel },
-      ];
+      { id: 'dashboard', label: 'Inicio', icon: LayoutDashboard },
+      { id: 'tasks', label: 'Tareas', icon: ClipboardList },
+      { id: 'cases', label: 'Casos', icon: Gavel },
+    ];
 
   return (
     <div className="flex min-h-screen bg-charcoal-50 font-sans text-charcoal-900 pb-20 lg:pb-0">
       {/* Sidebar - Desktop Only */}
       <div className="hidden lg:block">
-        <Sidebar 
-          activeTab={activeTab} 
-          setActiveTab={setActiveTab} 
-          isClientView={isClientView} 
+        <Sidebar
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          isClientView={isClientView}
         />
       </div>
 
@@ -68,7 +68,7 @@ const App: React.FC = () => {
               <span className="text-[10px] lg:text-xs font-bold text-charcoal-400 uppercase tracking-widest leading-tight">
                 {isClientView ? 'Portal Cliente' : 'Gestión Interna'}
               </span>
-              <button 
+              <button
                 onClick={() => {
                   const nextClientView = !isClientView;
                   setIsClientView(nextClientView);
@@ -112,9 +112,8 @@ const App: React.FC = () => {
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`flex flex-col items-center justify-center w-full h-full transition-colors ${
-                  isActive ? 'text-gold-700' : 'text-charcoal-400'
-                }`}
+                className={`flex flex-col items-center justify-center w-full h-full transition-colors ${isActive ? 'text-gold-700' : 'text-charcoal-400'
+                  }`}
               >
                 <div className={`p-1 rounded-lg transition-colors ${isActive ? 'bg-gold-50' : ''}`}>
                   <Icon size={20} />
