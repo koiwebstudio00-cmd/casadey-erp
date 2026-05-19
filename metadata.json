@@ -1,0 +1,7 @@
+{
+  "name": "LitisManager - Estudio Jurídico Demo",
+  "description": "Plataforma integral de gestión para estudios jurídicos especializados en reclamos de seguros, con dashboard contable, portal de clientes y asistentes inteligentes.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
